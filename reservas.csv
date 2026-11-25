@@ -1,0 +1,2 @@
+﻿id,cliente_id,estacionamiento_id,propietario_id,inicio,fin,estado,monto_total,monto_tarifa,monto_penalizacion,creada_en,motivo
+1,C04,E18,P01,2026-12-03 08:30,2026-12-03 12:30,FINALIZADA,7200,7200,0,2026-11-23 18:32,reserva finalizada

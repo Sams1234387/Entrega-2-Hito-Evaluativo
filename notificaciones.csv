@@ -1,0 +1,53 @@
+﻿id,momento,destinatario_tipo,destinatario_id,destinatario_nombre,asunto,mensaje,reserva_id,canal
+1,2026-11-23 18:31,PROPIETARIO,P04,Andrés Vidal,Liberaste tu estacionamiento E12,"Hola Andrés Vidal,
+
+Tu estacionamiento E12 quedó disponible para terceros el miércoles 02-12-2026 de 10:00 a 17:00 (14 bloques). Recuerda que siempre puedes bloquearlo si lo necesitas.",,APP
+2,2026-11-23 18:32,CLIENTE,C04,Tomás Bravo,Se recibio su solicitud de reserva #1 con exito ,"Hola, cliente Tomás Bravo, 
+
+Su solicitud quedo registrada y a la espera de ser asignada.Se le informara a la brevedad cuando se le asigne un estacionamiento. 
+
+Reserva:        #1
+Fecha:          jueves 03-12-2026
+Horario:        08:30 a 12:30
+Valor Estimado: $7.200",1,APP
+3,2026-11-23 18:32,ADMINISTRADOR,ADMIN,Administración,Nueva reserva #1 pendiente de asignar,"Tomás Bravo (patente RSTV78) solicitó jueves 03-12-2026, 08:30 a 12:30, valor $7.200. Falta asignarle un estacionamiento.",1,APP
+4,2026-11-23 18:32,CLIENTE,C04,Tomás Bravo,¡Arriendo exitoso! Reserva #1 confirmada en E18,"Hola Tomás Bravo,
+
+Su arriendo fue confirmado y el pago quedó registrado. Estos son sus datos:
+
+Reserva:            #1
+Estacionamiento:    E18
+Fecha:              jueves 03-12-2026
+Horario:            08:30 a 12:30 (8 bloques de 30 min)
+Patente autorizada: RSTV78
+Valor pagado:       $7.200
+
+Cómo ingresar: presente su patente en portería. Solo pueden entrar los vehículos con patente registrada.
+Importante: Se debe retirar su vehículo a más tardar a las 12:30. En caso de pasarse, se cobra $2.700 por cada 30 minutos excedidos.
+Cancelación sin costo hasta las 07:30 del 03-12-2026.",1,APP
+5,2026-11-23 18:32,PROPIETARIO,P01,Samuel Abdala,Tu estacionamiento E18 fue reservado,"Hola Samuel Abdala,
+
+Un cliente externo reservó tu estacionamiento.
+
+Reserva:             #1
+Estacionamiento:     E18
+Fecha:               jueves 03-12-2026
+Horario:             08:30 a 12:30
+Tu ingreso estimado: $5.040
+
+El vehículo debe salir 30 minutos antes de la hora en que declaraste que vuelves.",1,APP
+6,2026-12-03 15:30,PROPIETARIO,P01,Samuel Abdala,Recibiste $5.040 por la reserva #1,"Hola Samuel Abdala,
+
+Se cerró la reserva #1 de E18 (jueves 03-12-2026, 08:30 a 12:30).
+
+Tu parte:             $5.040
+Tarifa de la reserva: $7.200
+Penalizaciones:       $0",1,APP
+7,2026-12-03 15:30,CLIENTE,C04,Tomás Bravo,Reserva #1 cerrada: finalizada,"Hola Tomás Bravo,
+
+Tu reserva fue cerrada (finalizada).
+
+Reserva:      #1
+Tarifa:       $7.200
+Penalización: $0",1,APP
+8,2026-12-03 15:30,ADMINISTRADOR,ADMIN,Administración,Reserva #1 cerrada: finalizada,"Tomás Bravo: tarifa $7.200, penalización $0.",1,APP

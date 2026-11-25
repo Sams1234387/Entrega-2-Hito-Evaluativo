@@ -1,0 +1,6 @@
+﻿id,momento,tipo,reserva_id,estacionamiento_id,propietario_id,cliente_id,fecha,hora_inicio,hora_fin,estado,monto,detalle
+1,2026-11-23 18:31,LIBERACION,,E12,P04,,2026-12-02,10:00,17:00,LIBERADO,0,14 bloques liberados
+2,2026-11-23 18:32,RESERVA_CREADA,1,,,C04,2026-12-03,08:30,12:30,PENDIENTE,7200,"8 bloques, valor $7.200"
+3,2026-11-23 18:32,ASIGNACION,1,E18,P01,C04,2026-12-03,08:30,12:30,CONFIRMADA,0,asignada a E18
+4,2026-11-23 18:32,COBRO,1,E18,P01,C04,2026-12-03,08:30,12:30,CONFIRMADA,7200,prepago de la reserva
+5,2026-12-03 15:30,FINALIZACION,1,E18,P01,C04,2026-12-03,08:30,12:30,FINALIZADA,7200,uso completo de la reserva

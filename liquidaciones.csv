@@ -1,0 +1,2 @@
+﻿reserva_id,momento,fecha,estacionamiento_id,propietario_id,monto_tarifa,monto_penalizacion,a_propietario,a_operador,a_administracion
+1,2026-12-03 15:30,2026-12-03,E18,P01,7200,0,5040,1440,720

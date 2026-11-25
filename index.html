@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIGE — Gestión de estacionamientos</title>
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+
+<!-- ============ Barra superior: nombre del sistema y estado del Excel ============ -->
+<header class="barra">
+  <div class="marca">
+    <span class="logo">P</span>
+    <div><h1>SIGE</h1><small>Sistema Inteligente de Gestión de Estacionamientos</small></div>
+  </div>
+  <div class="excel-caja">
+    <span id="excel-estado" class="chip">Excel…</span>
+    <button id="btn-abrir-excel" class="btn btn-claro" title="Abre una copia actualizada del Excel">Abrir Excel</button>
+    <a id="btn-descargar" class="btn btn-claro" href="/descargar/excel">Descargar .xlsx</a>
+  </div>
+</header>
+
+<!-- ============ Reloj del sistema (sirve para demostrar reglas que dependen de la hora) ============ -->
+<section class="reloj-barra">
+  <div class="reloj-texto"><b>Hora del sistema:</b> <span id="reloj-texto">—</span> <span id="reloj-modo" class="chip"></span></div>
+  <div class="reloj-controles">
+    <input type="date" id="reloj-fecha" aria-label="Fecha simulada">
+    <select id="reloj-hora" class="hora" aria-label="Hora simulada"></select>
+    <button id="btn-fijar" class="btn btn-mini">Fijar hora</button>
+    <button class="btn btn-mini" data-avanzar="30">+30 min</button>
+    <button class="btn btn-mini" data-avanzar="60">+1 h</button>
+    <button class="btn btn-mini" data-avanzar="1440">+1 día</button>
+    <button id="btn-hora-real" class="btn btn-mini">Hora real</button>
+    <button id="btn-reiniciar" class="btn btn-mini btn-peligro">Reiniciar datos</button>
+  </div>
+</section>
+
+<nav class="pestanas" id="pestanas">
+  <button data-tab="propietario" class="activa">Propietario</button>
+  <button data-tab="cliente">Cliente</button>
+  <button data-tab="admin">Administrador</button>
+  <button data-tab="notif">Notificaciones <span id="badge-notif" class="badge oculto">0</span></button>
+  <button data-tab="datos">Datos y Excel</button>
+</nav>
+
+<main>
+
+<!-- ============================= PROPIETARIO ============================= -->
+<section id="tab-propietario" class="panel activo">
+  <div class="rejilla">
+    <div class="tarjeta">
+      <h2>Propietario</h2>
+      <label>¿Quién eres? <select id="p-quien"></select></label>
+      <div id="p-info" class="info"></div>
+    </div>
+
+    <div class="tarjeta">
+      <h2>Liberar o bloquear mi estacionamiento</h2>
+      <div class="fila-campos">
+        <label>Fecha <input type="date" id="p-fecha"></label>
+        <label>Desde <select id="p-inicio" class="hora"></select></label>
+        <label>Hasta <select id="p-fin" class="hora"></select></label>
+      </div>
+      <label>Motivo del bloqueo (opcional) <input type="text" id="p-motivo" placeholder="Ej: salgo antes del trabajo"></label>
+      <div class="botones">
+        <button id="p-liberar" class="btn btn-verde">Liberar (ofrecerlo a terceros)</button>
+        <button id="p-bloquear" class="btn btn-rojo">Bloquear — "Voy regresando"</button>
+      </div>
+      <p class="ayuda">El propietario siempre tiene prioridad: si bloqueas un horario que ya estaba reservado, el cliente se reubica en un estacionamiento de visita (o se cancela con reembolso total si no hay uno libre).</p>
+    </div>
+
+    <div class="tarjeta">
+      <h2>Horario recurrente semanal</h2>
+      <div class="dias" id="p-dias"></div>
+      <div class="fila-campos">
+        <label>Desde <select id="p-rec-inicio" class="hora"></select></label>
+        <label>Hasta <select id="p-rec-fin" class="hora"></select></label>
+        <label>Semanas <select id="p-rec-semanas"></select></label>
+      </div>
+      <button id="p-recurrente" class="btn btn-azul">Aplicar rutina</button>
+      <p class="ayuda">Libera automáticamente esos días y horas. Los bloques que ya bloqueaste se respetan.</p>
+    </div>
+
+    <div class="tarjeta ancha">
+      <h2>Mi día <small id="p-mapa-titulo"></small></h2>
+      <div id="p-mapa" class="mapa"></div>
+      <div class="leyenda">
+        <span><i class="cuadro c-liberado"></i> Liberado</span>
+        <span><i class="cuadro c-reservado"></i> Reservado</span>
+        <span><i class="cuadro c-bloqueado"></i> Bloqueado</span>
+        <span><i class="cuadro c-nolib"></i> No liberado</span>
+      </div>
+    </div>
+
+    <div class="tarjeta ancha">
+      <h2>Reservas en mi estacionamiento</h2>
+      <div id="p-reservas"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ CLIENTE ============================== -->
+<section id="tab-cliente" class="panel">
+  <div class="rejilla">
+    <div class="tarjeta">
+      <h2>Cliente</h2>
+      <label>¿Quién eres? <select id="c-quien"></select></label>
+      <div id="c-info" class="info"></div>
+      <button id="c-nuevo-btn" class="btn btn-claro-oscuro">Registrarme como cliente nuevo</button>
+      <div id="c-nuevo" class="oculto">
+        <label>Nombre <input type="text" id="c-n-nombre"></label>
+        <label>RUT <input type="text" id="c-n-rut" placeholder="12.345.678-9"></label>
+        <label>Patente <input type="text" id="c-n-patente" placeholder="ABCD12"></label>
+        <button id="c-n-registrar" class="btn btn-azul">Registrar</button>
+      </div>
+    </div>
+
+    <div class="tarjeta">
+      <h2>Reservar un estacionamiento</h2>
+      <div class="fila-campos">
+        <label>Fecha <input type="date" id="c-fecha"></label>
+        <label>Desde <select id="c-inicio" class="hora"></select></label>
+        <label>Hasta <select id="c-fin" class="hora"></select></label>
+      </div>
+      <button id="c-reservar" class="btn btn-azul">Reservar</button>
+      <p class="ayuda">Tarifa: $900 por bloque de 30 minutos (tope diario $12.000). Debes reservar con al menos 30 minutos de anticipación. La reserva queda pendiente hasta que el administrador le asigne un estacionamiento; ahí recibirás la confirmación.</p>
+    </div>
+
+    <div class="tarjeta ancha">
+      <h2>Mis reservas</h2>
+      <div id="c-reservas"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ADMINISTRADOR ============================ -->
+<section id="tab-admin" class="panel">
+  <div class="rejilla">
+    <div class="tarjeta ancha">
+      <h2>Reservas pendientes de asignar</h2>
+      <div id="a-pendientes"></div>
+    </div>
+    <div class="tarjeta ancha">
+      <h2>Reservas confirmadas: reasignar o cerrar</h2>
+      <div id="a-confirmadas"></div>
+    </div>
+    <div class="tarjeta ancha">
+      <h2>Tablero de estacionamientos <small>(en la hora del sistema)</small></h2>
+      <div id="a-tablero" class="tablero"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ NOTIFICACIONES =========================== -->
+<section id="tab-notif" class="panel">
+  <div class="tarjeta ancha">
+    <h2>Notificaciones enviadas por el sistema</h2>
+    <div class="fila-campos">
+      <label>Tipo de destinatario
+        <select id="n-tipo">
+          <option value="">Todos</option>
+          <option value="CLIENTE">Clientes</option>
+          <option value="PROPIETARIO">Propietarios</option>
+          <option value="ADMINISTRADOR">Administración</option>
+        </select>
+      </label>
+      <label>Persona <select id="n-persona"></select></label>
+    </div>
+    <div class="notif-layout">
+      <ul id="n-lista" class="lista-notif"></ul>
+      <article id="n-detalle" class="detalle-notif"><p class="vacio">Selecciona una notificación para leerla completa.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DATOS Y EXCEL ============================ -->
+<section id="tab-datos" class="panel">
+  <div class="tarjeta ancha">
+    <h2>Los datos se guardan en un archivo Excel</h2>
+    <p>Cada operación actualiza el archivo automáticamente. Ruta: <code id="d-ruta">—</code></p>
+    <p id="d-estado" class="estado-excel"></p>
+    <div class="botones">
+      <button id="d-abrir" class="btn btn-azul">Abrir Excel (copia actualizada)</button>
+      <a class="btn btn-claro-oscuro" href="/descargar/excel">Descargar .xlsx</a>
+    </div>
+    <p class="ayuda">Para ver los cambios mientras la aplicación corre, usa "Abrir Excel": abre una copia al día sin bloquear el archivo original (Excel bloquea los archivos abiertos y el sistema no podría seguir escribiéndolo). Para ver un cambio nuevo, vuelve a apretar el botón. Abajo, las mismas tablas se actualizan solas.</p>
+  </div>
+  <div class="tarjeta ancha">
+    <div id="d-subtabs" class="subpestanas"></div>
+    <p id="d-resumen" class="ayuda"></p>
+    <div id="d-tabla" class="tabla-scroll"></div>
+  </div>
+</section>
+
+</main>
+
+<div id="toasts" aria-live="polite"></div>
+<script src="/app.js"></script>
+</body>
+</html>
